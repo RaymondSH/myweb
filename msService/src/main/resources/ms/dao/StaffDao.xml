@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ms.dao.StaffDao">
+    <resultMap id="resultMap" type="Staff">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="account" column="account" javaType="String"/>
+        <result property="password" column="password" javaType="String"/>
+        <result property="status" column="status" javaType="String"/>
+        <result property="departmentId" column="department_id" javaType="Integer"/>
+        <result property="name" column="name" javaType="String"/>
+        <result property="sex" column="sex" javaType="String"/>
+        <result property="IDCard" column="IDCard" javaType="String"/>
+        <result property="workTime" column="work_time" javaType="java.util.Date"/>
+        <result property="leaveTime" column="leave_time" javaType="java.util.Date"/>
+        <result property="info" column="info" javaType="String"/>
+        <association property="department" column="department_id" javaType="ms.entity.Department" select="ms.dao.DepartmentDao.selectById" />
+    </resultMap>
+
+    <insert id="insert" parameterType="Staff" useGeneratedKeys="true">
+        insert into ms_staff(account,password,status,department_id,name,sex,id_card,work_time,leave_time,info)
+        values(#{account},#{password},#{status},#{departmentId},#{name},#{sex},#{IDCard},#{workTime},#{leaveTime},#{info})
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        delete from ms_staff where id=#{id}
+    </delete>
+    <update id="update" parameterType="Staff">
+        update ms_staff set account=#{account},password=#{password},status=#{status},
+        department_id=#{departmentId},name=#{name},sex=#{sex},IDCard=#{IDCard},
+        work_time=#{workTime},leave_time=#{leaveTime},info=#{info} where id=#{id}
+    </update>
+    <select id="selectById" parameterType="Integer" resultMap="resultMap">
+        select * from ms_staff where id=#{id}
+    </select>
+    <select id="selectAll" resultMap="resultMap">
+        select * from ms_staff
+    </select>
+
+    <select id="selectByAccount" parameterType="String" resultMap="resultMap">
+        SELECT * FROM ms_staff WHERE account=#{account}
+    </select>
+</mapper>
